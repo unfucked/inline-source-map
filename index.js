@@ -38,7 +38,8 @@ Generator.prototype.addMappings = function (sourceFile, mappings, offset) {
   mappings.forEach(function (m) {
     // only set source if we have original position to handle edgecase (see inline-source-map tests)
     generator.addMapping({
-        source    :  m.original ? sourceFile : undefined
+        // unfuck: use the mapping from the source map - pass through source file as internal uses are sloppy //
+        source    :  m.original && m.source ? m.source : (sourceFile || undefined)
       , original  :  m.original
       , generated :  offsetMapping(m.generated, offset)
     });
